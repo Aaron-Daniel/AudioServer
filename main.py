@@ -66,7 +66,7 @@ def lstAudio():
     return audioHandler.searchForFiles(criteria), 200
 
 '''It was unclear how this differs from /list so I simply implemented it with similar logic to fit the
- requirement in the assignment document'''
+ requirement'''
 @app.route('/info', methods=['GET'])
 def getAudioInfo():
     nameparam = request.args.get('name')
