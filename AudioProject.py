@@ -38,3 +38,14 @@ class AudioProject:
             raise Exception("Audio Format Detection Failure")
         self.length = audio.info.length
 
+    def getAudio(self):
+        return self.data
+
+
+    def getMime(self):
+        return self.mime
+
+
+    def getLength(self):
+        return self.length
+

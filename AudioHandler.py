@@ -1,9 +1,5 @@
-import magic
 import time
 from AudioProject import AudioProject
-from mutagen import mp3, wave
-import io
-#import json
 
 
 class AudioHandler:
@@ -22,13 +18,13 @@ class AudioHandler:
     def __recordMatchesCriteria(self,recordKey,criteria):
         audioProject = self.storage[recordKey]
         if ('maxduration' in criteria):
-            if(int(criteria['maxduration']) < int(audioProject.length)):
+            if(int(criteria['maxduration']) < int(audioProject.getLength())):
                 return False
         if ('minduration' in criteria):
-            if (int(criteria['minduration']) > int(audioProject.length)):
+            if (int(criteria['minduration']) > int(audioProject.getLength())):
                 return False
         if ('mime' in criteria):
-            if (criteria['mime'] != audioProject.mime):
+            if (criteria['mime'] != audioProject.getMime()):
                 return False
         if ('namecontains' in criteria):
             if (str(criteria['namecontains']) not in recordKey):
@@ -44,7 +40,7 @@ class AudioHandler:
         data = data.read()
         return self.__putAudio(fileName, data)
 
-    def getData(self, fileName):
+    def getAudioProject(self, fileName):
         if not self.fileExists(fileName):
             raise FileNotFoundError
         return self.storage[fileName]
@@ -61,8 +57,8 @@ class AudioHandler:
             if (self.__recordMatchesCriteria(key,criteria)):
                 metaData = {}
                 metaData['name'] = key
-                metaData['length'] = self.storage[key].length
-                metaData['mime'] = self.storage[key].mime
+                metaData['length'] = self.storage[key].getLength()
+                metaData['mime'] = self.storage[key].getMime()
                 ret['storedData'].append(metaData)
         ret['storeCount'] = len(ret['storedData'])
         return ret

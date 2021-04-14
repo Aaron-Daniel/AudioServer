@@ -45,9 +45,9 @@ def downloadAudio():
         return "No file specified", 500
     if not audioHandler.fileExists(fileName):
         return "File Not Found", 404
-    fileData = audioHandler.getData(fileName)
-    audioData = fileData.data
-    mime = fileData.mime
+    fileData = audioHandler.getAudioProject(fileName)
+    audioData = fileData.getData()
+    mime = fileData.getMime()
     ret = io.BytesIO()
     ret.write(audioData)
     ret.seek(0)

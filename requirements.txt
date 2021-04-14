@@ -1,0 +1,4 @@
+Flask~=1.1.2
+gevent~=21.1.2
+python-magic~=0.4.22
+mutagen~=1.45.1
