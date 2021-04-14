@@ -1,7 +1,7 @@
-#Installation
+# Installation
 
 pip install -r requirements.txt
 
-#Launch
+# Launch
 
 python3 main.py
