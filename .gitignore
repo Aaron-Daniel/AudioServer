@@ -1,0 +1,6 @@
+.DS_Store
+.idea/
+requirements.pdf
+__pycache__/
+tmp/
+venv/
