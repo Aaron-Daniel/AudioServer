@@ -16,8 +16,10 @@ class AudioHandler:
         self.storage[key] = audioProject
         return key
 
-    def __recordMatchesCriteria(self,recordKey,criteria):
+    def __recordMatchesCriteriaAndUser(self,recordKey, criteria, UUID): # Could have used boolean logic here, but this seems easier to read
         audioProject = self.storage[recordKey]
+        if (audioProject.getOwnerUUID() != UUID):
+            return False
         if ('maxduration' in criteria):
             if(int(criteria['maxduration']) < int(audioProject.getLength())):
                 return False
@@ -41,25 +43,26 @@ class AudioHandler:
         data = data.read()
         return self.__putAudio(fileName, data, UUID)
 
-    def getAudioProject(self, fileName):
-        if not self.fileExists(fileName):
+    def getAudioProject(self, fileName, ownerUUID):
+        if fileName not in self.storage.keys():
             raise AudioFileNotFoundException
-        return self.storage[fileName]
+        audioProject = self.storage[fileName]
+        if audioProject.getOwnerUUID() != ownerUUID:
+            raise AudioFileNotFoundException
+        return audioProject
 
-    def fileExists(self, fileName):
-        return fileName in self.storage.keys()
-
-    def searchForFiles(self, criteria):
+    def searchForFiles(self, criteria, ownerUUID):
         ret = {
             'storedData':[],
-            'storeCount': 0
+            'count': 0
         }
+        # Brute force search, this is not an issue though because, in practice, database queries will handle searching
         for key in self.storage.keys():
-            if (self.__recordMatchesCriteria(key,criteria)):
+            if (self.__recordMatchesCriteriaAndUser(key,criteria, ownerUUID)):
                 metaData = {}
                 metaData['name'] = key
                 metaData['length'] = self.storage[key].getLength()
                 metaData['mime'] = self.storage[key].getMime()
                 ret['storedData'].append(metaData)
-        ret['storeCount'] = len(ret['storedData'])
+        ret['count'] = len(ret['storedData'])
         return ret
