@@ -1,4 +1,5 @@
 import time
+from AudioHandlerExceptions import *
 from AudioProject import AudioProject
 
 
@@ -6,12 +7,12 @@ class AudioHandler:
     def __init__(self):
         self.storage = {}
 
-    def __putAudio(self, key, audioData):
+    def __putAudio(self, key, audioData, UUID):
         if (key in self.storage):
-            raise Exception("Key already exists")
+            raise KeyAlreadyExistsException
         if (key is None):
             key = str(time.time_ns())
-        audioProject = AudioProject(audioData, key)
+        audioProject = AudioProject(audioData, key, UUID)
         self.storage[key] = audioProject
         return key
 
@@ -36,13 +37,13 @@ class AudioHandler:
 
     ########## Public Methods ##########
 
-    def storeAudioBytes(self, data, fileName = None):
+    def storeAudioBytes(self, data, UUID, fileName = None):
         data = data.read()
-        return self.__putAudio(fileName, data)
+        return self.__putAudio(fileName, data, UUID)
 
     def getAudioProject(self, fileName):
         if not self.fileExists(fileName):
-            raise FileNotFoundError
+            raise AudioFileNotFoundException
         return self.storage[fileName]
 
     def fileExists(self, fileName):
