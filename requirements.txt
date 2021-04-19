@@ -2,3 +2,9 @@ Flask~=1.1.2
 gevent~=21.1.2
 python-magic~=0.4.22
 mutagen~=1.45.1
+PyJWT==1.7.1
+
+datetime
+uuid
+Flask-SQLAlchemy
+PyJWT
